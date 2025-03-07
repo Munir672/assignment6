@@ -3,17 +3,21 @@ import { ObjectId } from "mongodb";
 
 //now show
 const createShow = (req, res) =>{
+    //make these variables out of the req.body array 
     const {title, seasons, year, topActors} = req.body;
 
+    //create a new show
     const newShow ={
         title: req.body.title,
-        numberOfSeasons: Number(req.body.seasons),
-        firstEpisodeYear: Number(req.body.year),
+        numberOfSeasons: Number(req.body.numberOfSeasons),
+        firstEpisodeYear: Number(req.body.firstEpisodeYear),
+        //we make a new object using map for the id 
         topActors: (req.body.checkActor || []).map(id => ({ actor_id: new ObjectId(id) }))
     }
     
-
+    //insert that new show to the collection name show in the database
     database.collection('shows').insertOne(newShow).
+        //if ok then send a success message 
         then((show)=>{
             res.status(201).send(
                 `<html>
@@ -27,10 +31,11 @@ const createShow = (req, res) =>{
                 </html>`
             )
         }).
+        //if not then an error message
         catch((error)=>{
-            console.dir(errorObject, {depth: null})
-            console.log(error)
-            console.dir(errorObject, {depth: null})
+            console.error(error);
+            res.status(500).send("Error creating show.");
+            
         })
 }
 
@@ -63,9 +68,11 @@ const getAll = (req, res) => {
         }
     ])
     .toArray()
+    //if ok send the answer 
     .then(shows => {
         res.json(shows);  // Send the resulting shows as JSON
     })
+    //if not then sent the error
     .catch((error) => {
         console.error(error);
         res.status(500).send("Error retrieving shows.");

@@ -6,13 +6,14 @@ import { database } from '../database.js';
 // TODO: Routing logic
 const createActor = (req, res) =>{
     // Extract the name from the request body
-    const { actorName } = req.body;  // Corrected field name from actorName
+    const { actorName } = req.body; 
 
     // Create a new actor document
-    const newActor = { name: actorName };  // MongoDB will generate _id automatically
+    const newActor = { name: actorName };  
 
     // Insert the new actor into the 'actors' collection
     database.collection('actors').insertOne(newActor)
+        //if things go well send a success and link to home
         .then(() => {
             res.status(201).send(`
                 <html>
@@ -26,9 +27,9 @@ const createActor = (req, res) =>{
                 </html>
             `);
         })
+        //if not then an error messsage
         .catch((error) => {
-            console.dir(errorObject, {depth: null});
-            console.error(`Error inserting actor: ${error}`);
+            console.error(error);
             res.status(500).json({ message: 'Failed to insert new actor' });
         });
 };

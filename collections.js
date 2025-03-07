@@ -1,7 +1,7 @@
 const setupCollections = async (database) => {
     try {
         // Create the Shows collection with schema validation
-        let showCollection = await database.createCollection('Shows', {
+        let showCollection = database.createCollection('Shows', {
             validator: {
                 $jsonSchema: {
                     bsonType: 'object',
@@ -44,7 +44,7 @@ const setupCollections = async (database) => {
         });
 
         // Create the Actors collection with schema validation
-        let actorCollection = await database.createCollection('Actors', {
+        let actorCollection = database.createCollection('Actors', {
             validator: {
                 $jsonSchema: {
                     bsonType: 'object',

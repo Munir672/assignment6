@@ -1,6 +1,6 @@
 import express from 'express';
-import { ObjectId } from 'mongodb'; // ES Module style import
-import mainRouter from './routes/index.js' //importing router
+import { ObjectId } from 'mongodb'; 
+import mainRouter from './routes/index.js' 
 
 let app = express(); 
 
@@ -8,9 +8,10 @@ import { connection, database } from './database.js';
 import setupCollections from './collections.js';
 
 let server;
+
 connection
 // Uncomment the line below when ready to test setupCollections. It's not necessary before then.
-//.then(()=>setupCollections(database)) 
+.then(()=>setupCollections(database)) 
 .then(()=>{
   console.log("Success: connected to database!");
   server = app.listen(3000, ()=>console.log('Server ready'));
@@ -24,7 +25,7 @@ app.get("/", (req,res)=>{
     // Get all actors from database
     database.collection("actors").find().toArray()
     .then(actors=>{
-        // render the home page template with list of actors 
+        // render the home page 
         res.locals.actors = actors;
         res.render('index');
     })
@@ -34,7 +35,7 @@ app.get("/", (req,res)=>{
     });
 });
 
-//routes
+//this is the last boss of routers it uses mainroutere that we passed from the index router
 app.use('/api/v1', mainRouter);
 
 
